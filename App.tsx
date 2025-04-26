@@ -1,118 +1,89 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Loginpage from './src/screens/Loginpage'; // Import Loginpage
+import Profile from './src/screens/Profile'; // Import Profile
+import JournalEntry from './src/screens/JournalEntry'; // Import JournalEntry
+import JournalHistory from './src/screens/JournalHistory'; // Import JournalHistory
+import MoodTracker from './src/screens/MoodTracker'; // Import MoodTracker
+import Chatbot from './src/screens/Chatbot'; // Import Chatbot
+import SignUp from './src/screens/SignUp'; // Import Chatbot
+import JournalView from './src/screens/JournalView'; // Import JournalView
+import Groq from 'groq-sdk';
+//initialize screens; define parameters
+export type RootStackParamList = {
+  Login: undefined;
+  Profile: undefined;
+  JournalEntry: undefined;
+  JournalHistory: undefined;
+  MoodTracker: { entries: { mood: string; text: string; title: string; date: string }[] };
+  Chatbot: undefined;
+  SignUp: undefined;
+  JournalView: {title: string;text: string;mood: string;date: string;};
+};
+//create screens
+const Stack = createStackNavigator<RootStackParamList>();
+function App() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        
+        <Stack.Screen
+          name="Login"
+          component={Loginpage}
+          //options={{ title: 'Login' }}
+          options={{ headerShown: false }} 
+        />
+        
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          //options={{ title: 'Profile' }}
+          options={{ title: 'Profile', headerLeft: () => null, headerShown: false }}
+        />
+        
+        <Stack.Screen
+          name="JournalEntry"
+          component={JournalEntry}
+          //options={{ title: 'Journal Entry' }}
+          options={{ title: 'JournalEntry', headerLeft: () => null, }}
+        />
+        
+        <Stack.Screen
+          name="JournalHistory"
+          component={JournalHistory}
+          options={{ title: 'Journal History', headerShown: true }}
+          //options={{ title: 'Previous Entries' }}
+          //options={{ headerShown: false }} 
+        />
+        
+        <Stack.Screen
+          name="MoodTracker"
+          component={MoodTracker}
+          options={{ title: 'Mood Tracker'}}
+        />
+        
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ title: 'SignUp'}}
+        />
+         
+        <Stack.Screen
+          name="JournalView"
+          component={JournalView}
+          options={{ title: 'JournalView'}}
+          //options={{ headerShown: false }} 
+        />
+        
+        <Stack.Screen
+          name="Chatbot"
+          component={Chatbot}
+          options={{ title: 'Chatbot'}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
